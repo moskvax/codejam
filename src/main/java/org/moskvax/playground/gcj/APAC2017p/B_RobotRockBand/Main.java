@@ -14,30 +14,29 @@ public class Main {
 
   private static long solve(int k, List<List<Integer>> robotNumberLists) {
 
-    List<Map<Integer, Integer>> numberValueList = new ArrayList<>();
-    long combinations = 0;
+    HashMap<Integer, Integer> numberCountTotals = new HashMap<>();
 
-    for (List<Integer> robotNumbers : robotNumberLists) {
-      HashMap<Integer, Integer> numberCount = new HashMap<>();
-      for (Integer robotNumber : robotNumbers) {
-        numberCount.put(robotNumber, numberCount.getOrDefault(robotNumber, 0) + 1);
-      }
-      numberValueList.add(numberCount);
+    for (Integer robotNumber : robotNumberLists.get(0)) {
+      numberCountTotals.put(robotNumber, numberCountTotals.getOrDefault(robotNumber, 0) + 1);
     }
 
-    for (Map.Entry<Integer, Integer> w : numberValueList.get(0).entrySet()) {
-      for (Map.Entry<Integer, Integer> x : numberValueList.get(1).entrySet()) {
-        for (Map.Entry<Integer, Integer> y : numberValueList.get(2).entrySet()) {
-          for (Map.Entry<Integer, Integer> z : numberValueList.get(3).entrySet()) {
-            if ((w.getKey() ^ x.getKey() ^ y.getKey() ^ z.getKey()) == k) {
-              combinations += w.getValue() * x.getValue() * y.getValue() * z.getValue();
-            }
-          }
+    for (List<Integer> robotNumbers : robotNumberLists.subList(1, 4)) {
+      HashMap<Integer, Integer> numberCountUpdate = new HashMap<>();
+      HashMap<Integer, Integer> numberCountNewTotals = new HashMap<>();
+      for (Integer robotNumber : robotNumbers) {
+        numberCountUpdate.put(robotNumber, numberCountUpdate.getOrDefault(robotNumber, 0) + 1);
+      }
+      for (Map.Entry<Integer, Integer> oldCount : numberCountTotals.entrySet()) {
+        for (Map.Entry<Integer, Integer> newCount : numberCountUpdate.entrySet()) {
+          numberCountNewTotals.put(oldCount.getKey() ^ newCount.getKey(),
+              oldCount.getValue() * newCount.getValue());
         }
       }
+      numberCountTotals = new HashMap<>();
+      numberCountTotals.putAll(numberCountNewTotals);
     }
 
-    return combinations;
+    return numberCountTotals.get(k);
   }
 
   public static void main(String[] args) throws IOException {
