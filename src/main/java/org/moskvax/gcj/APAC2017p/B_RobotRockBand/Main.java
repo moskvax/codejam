@@ -1,4 +1,4 @@
-package org.moskvax.playground.gcj.APAC2017p.B_RobotRockBand;
+package org.moskvax.gcj.APAC2017p.B_RobotRockBand;
 
 import java.io.BufferedReader;
 import java.io.FileReader;

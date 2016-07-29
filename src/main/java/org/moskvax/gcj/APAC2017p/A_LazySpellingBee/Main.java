@@ -1,8 +1,12 @@
-package org.moskvax.playground.gcj.APAC2017p.A_LazySpellingBee;
+package org.moskvax.gcj.APAC2017p.A_LazySpellingBee;
 
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.math.BigInteger;
-import java.util.*;
-import java.io.*;
+import java.util.HashSet;
+import java.util.Scanner;
 
 public class Main {
 
