@@ -4,7 +4,6 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -13,11 +12,11 @@ import java.util.Scanner;
 
 public class Main {
 
-  private static BigInteger solve(int k, List<List<Integer>> robotNumberLists) {
+  private static long solve(int k, List<List<Integer>> robotNumberLists) {
 
     List<HashMap<Integer, Integer>> countMapList = new ArrayList<>();
     List<HashMap<Integer, Long>> combinedCountMapList = new ArrayList<>();
-    BigInteger combinations = BigInteger.ZERO;
+    long combinations = 0;
 
     for (int i = 0; i < 4; i++) {
       HashMap<Integer, Integer> countMap = new HashMap<>();
@@ -33,15 +32,15 @@ public class Main {
         for (Map.Entry<Integer, Integer> count1 : countMapList.get(i + 2).entrySet()) {
           int newKey = count0.getKey() ^ count1.getKey();
           countMap.put(newKey,
-              countMap.getOrDefault(newKey, 0L) + (((long) count0.getValue()) * count1.getValue()));
+              countMap.getOrDefault(newKey, 0L) + (count0.getValue() * count1.getValue()));
         }
       }
       combinedCountMapList.add(countMap);
     }
 
     for (Map.Entry<Integer, Long> count0 : combinedCountMapList.get(0).entrySet()) {
-      combinations = combinations.add(BigInteger.valueOf(
-          combinedCountMapList.get(1).getOrDefault(count0.getKey() ^ k, 0L) * count0.getValue()));
+      combinations +=
+          combinedCountMapList.get(1).getOrDefault(count0.getKey() ^ k, 0L) * count0.getValue();
     }
 
     return combinations;
