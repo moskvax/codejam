@@ -4,29 +4,34 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.Map;
+import java.util.NavigableSet;
 import java.util.Scanner;
 import java.util.TreeMap;
 
 public class Main {
 
   private static String solve(TreeMap<Integer, Integer> vines, int d) {
-    int height = vines.firstKey();
-    int position = height;
+    TreeMap<Integer, Integer> trialVines = new TreeMap<>();
+    trialVines.put(vines.firstKey(), vines.firstKey());
 
-    if (position + height >= d) {
-      return "YES";
-    }
+    while (!trialVines.isEmpty()) {
+      Map.Entry<Integer, Integer> currentVine = trialVines.pollLastEntry();
+      int currentPosition = currentVine.getKey();
+      int currentHeight = currentVine.getValue();
 
-    while (height > 0) {
-      int nextHeight = vines.getOrDefault(height + position, -1);
-      if (nextHeight > 0) {
-        position += height;
-        height = Math.min(height, nextHeight);
-        if (position + height >= d) {
-          return "YES";
-        }
-      } else {
-        height--;
+      if (currentPosition + currentHeight >= d) {
+        return "YES";
+      }
+
+      NavigableSet<Integer> reachablePositions =
+          vines.subMap(currentPosition, false, currentPosition + currentHeight, true)
+              .descendingKeySet();
+
+      for (Integer reachablePosition : reachablePositions) {
+        int reachableHeight =
+            Math.min(vines.get(reachablePosition), reachablePosition - currentPosition);
+        trialVines.put(reachablePosition, reachableHeight);
       }
     }
     return "NO";
