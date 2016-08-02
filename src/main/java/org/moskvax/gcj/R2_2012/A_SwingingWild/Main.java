@@ -13,12 +13,14 @@ public class Main {
 
   private static String solve(TreeMap<Integer, Integer> vines, int d) {
     TreeMap<Integer, Integer> trialVines = new TreeMap<>();
+    TreeMap<Integer, Integer> checkedVines = new TreeMap<>();
     trialVines.put(vines.firstKey(), vines.firstKey());
 
     while (!trialVines.isEmpty()) {
       Map.Entry<Integer, Integer> currentVine = trialVines.pollLastEntry();
       int currentPosition = currentVine.getKey();
       int currentHeight = currentVine.getValue();
+      checkedVines.put(currentPosition, currentHeight);
 
       if (currentPosition + currentHeight >= d) {
         return "YES";
@@ -31,7 +33,9 @@ public class Main {
       for (Integer reachablePosition : reachablePositions) {
         int reachableHeight =
             Math.min(vines.get(reachablePosition), reachablePosition - currentPosition);
-        trialVines.put(reachablePosition, reachableHeight);
+        if (reachableHeight > checkedVines.getOrDefault(reachablePosition, -1)) {
+          trialVines.put(reachablePosition, reachableHeight);
+        }
       }
     }
     return "NO";
