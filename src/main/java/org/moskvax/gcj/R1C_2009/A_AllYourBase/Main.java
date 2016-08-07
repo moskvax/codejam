@@ -4,17 +4,17 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.math.BigInteger;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Scanner;
 
 import static java.lang.Integer.valueOf;
 
 public class Main {
 
-  private static long solve(String tc) {
+  private static String solve(String tc) {
     String[] tcDigits = tc.split("");
     HashSet<String> digitSet = new HashSet<>();
     HashMap<String, Integer> digitMap = new HashMap<>();
@@ -23,7 +23,7 @@ public class Main {
     digitMap.put(tcDigits[0], 1);
     int nextMin = 0;
     int base = Math.max(digitSet.size(), 2);
-    long res = (long) Math.pow(base, tcDigits.length - 1);
+    BigInteger res = BigInteger.valueOf(base).pow(tcDigits.length - 1);
 
     for (int i = 1; i < tcDigits.length; i++) {
       if (!digitMap.containsKey(tcDigits[i])) {
@@ -32,10 +32,12 @@ public class Main {
           nextMin++;
         }
       }
-      res += ((long) Math.pow(base, tcDigits.length - i - 1))  * ((long) digitMap.get(tcDigits[i]));
+      res = res.add(BigInteger.valueOf(base).pow(tcDigits.length - 1 - i)
+          .multiply(BigInteger.valueOf(digitMap.get(tcDigits[i]))));
+
     }
 
-    return res;
+    return res.toString();
   }
 
   public static void main(String[] args) throws IOException {
