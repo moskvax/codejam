@@ -7,36 +7,47 @@ import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
-import java.util.stream.Stream;
 
 public class Main {
 
-  private static String solve(int[] tc, List<List<Integer>> qs) {
-    List<Integer> sortedSums = new ArrayList<>();
-    for (int i = 0; i < tc.length; i++) {
-      for (int j = 0; j < tc.length - i; j++) {
-
+  private static void solve(int[] ns, int[][] qs, PrintWriter out) {
+    List<Long> sums = new ArrayList<>();
+    for (int i = 0; i < ns.length; i++) {
+      for (int j = i; j < ns.length; j++) {
+        long sum = 0;
+        for (int k = i; k <= j; k++) {
+          sum += ns[k];
+        }
+        sums.add(sum);
       }
     }
-    return "";
+    sums.sort(null);
+    for (int i = 0; i < qs.length; i++) {
+      long res = 0;
+      for (int j = qs[i][0] - 1; j < qs[i][1]; j++) {
+        res += sums.get(j);
+      }
+      out.println(res);
+    }
   }
 
   public static void main(String[] args) throws FileNotFoundException {
     Scanner in = new Scanner(new BufferedReader(new FileReader(args[0])));
     PrintWriter out = new PrintWriter(args[0].substring(0, args[0].lastIndexOf('.')) + ".out");
-    int t = Integer.valueOf(in.nextLine());
+    int t = in.nextInt();
     for (int i = 1; i <= t; ++i) {
-      int q = Integer.valueOf(in.nextLine().split(" ")[1]);
-      int[] tc = Stream.of(in.nextLine().split(" ")).mapToInt(Integer::valueOf).toArray();
-
-      List<List<Integer>> qs = new ArrayList<>();
-      for (int j = 0; j < q; j++) {
-        List<Integer> qj = new ArrayList<>();
-        qj.add(in.nextInt());
-        qj.add(in.nextInt());
-        qs.add(qj);
+      int n = in.nextInt();
+      int q = in.nextInt();
+      int[] tc = new int[n];
+      for (int j = 0; j < n; j++) {
+        tc[j] = in.nextInt();
       }
-      out.printf("Case #%d:\n%s", i, solve(tc, qs));
+      int[][] qs = new int[q][2];
+      for (int j = 0; j < q; j++) {
+        qs[j] = new int[] { in.nextInt(), in.nextInt() };
+      }
+      out.printf("Case #%d:\n", i);
+      solve(tc, qs, out);
       out.flush();
     }
   }
