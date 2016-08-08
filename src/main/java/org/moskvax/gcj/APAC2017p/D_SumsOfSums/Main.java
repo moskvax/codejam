@@ -10,10 +10,10 @@ import java.util.Scanner;
 
 public class Main {
 
-  private static void solve(int[] ns, int[][] qs, PrintWriter out) {
+  private static void solve(int[] ns, int n, int[][] qs, int q, PrintWriter out) {
     List<Long> sums = new ArrayList<>();
-    for (int i = 0; i < ns.length; i++) {
-      for (int j = i; j < ns.length; j++) {
+    for (int i = 0; i < n; i++) {
+      for (int j = i; j < n; j++) {
         long sum = 0;
         for (int k = i; k <= j; k++) {
           sum += ns[k];
@@ -22,7 +22,7 @@ public class Main {
       }
     }
     sums.sort(null);
-    for (int i = 0; i < qs.length; i++) {
+    for (int i = 0; i < q; i++) {
       long res = 0;
       for (int j = qs[i][0] - 1; j < qs[i][1]; j++) {
         res += sums.get(j);
@@ -38,16 +38,16 @@ public class Main {
     for (int i = 1; i <= t; ++i) {
       int n = in.nextInt();
       int q = in.nextInt();
-      int[] tc = new int[n];
+      int[] ns = new int[n];
       for (int j = 0; j < n; j++) {
-        tc[j] = in.nextInt();
+        ns[j] = in.nextInt();
       }
       int[][] qs = new int[q][2];
       for (int j = 0; j < q; j++) {
         qs[j] = new int[] { in.nextInt(), in.nextInt() };
       }
       out.printf("Case #%d:\n", i);
-      solve(tc, qs, out);
+      solve(ns, n, qs, q, out);
       out.flush();
     }
   }
